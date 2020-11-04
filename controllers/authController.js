@@ -1,4 +1,5 @@
 const models = require('../db/models')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     /**
@@ -50,7 +51,7 @@ module.exports = {
                     userId: user.id,
                     email: user.email
                 },
-                process.env.SECRET,
+                process.env.JWT_SECRET,
                 {
                     expiresIn: '24h',
                     audience: process.env.AUDIENCE,
