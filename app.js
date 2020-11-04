@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
+const propositionsRouter = require('./routes/proposition')
 
 
 // Initilisation du server express
@@ -22,6 +23,7 @@ app.use(cors());
 // Routage
 app.use('/api/auth/', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/propositions',propositionsRouter)
 
 // 404 Not found
 app.use(function (req, res, next) {

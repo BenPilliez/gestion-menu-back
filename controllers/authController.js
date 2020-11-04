@@ -23,8 +23,8 @@ module.exports = {
             return res.status(500).json(err)
         }
     },
-    login: async (req, res) => {
-        console.debug("app => authController => login");
+    signin: async (req, res) => {
+        console.debug("app => authController => signin");
 
         try {
 
@@ -75,7 +75,7 @@ module.exports = {
     },
     account: async (req, res) => {
         try {
-            let user = await models.User.findByPk(req.user.userId, {
+            let user = await models.users.findByPk(req.user.userId, {
                 include: [
                     {
                         model: models.propositions

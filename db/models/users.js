@@ -1,6 +1,7 @@
 'use strict';
 const {Model} = require('sequelize');
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 
 module.exports = (sequelize, DataTypes) => {
     class users extends Model {
@@ -104,7 +105,8 @@ module.exports = (sequelize, DataTypes) => {
         this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
         this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
 
-        return resetPasswordToken
+        this.save()
+        return this.resetPasswordToken
     }
     return users
 };

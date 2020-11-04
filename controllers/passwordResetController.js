@@ -1,6 +1,6 @@
 const models = require('../db/models')
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const {Op} = require('sequelize')
 
 module.exports = {
@@ -12,9 +12,13 @@ module.exports = {
      */
     passwordRecover: async (req, res) => {
         try {
-            const user = await models.users.findOne({
-                email: req.body.email
-            })
+            const user = await models.users.findOne(
+                {
+                    where: {
+                        email: req.body.email
+                    }
+                }
+            )
 
             if (!user) {
                 return res.status(404).json({error: 'Aucun utilisateur'})
@@ -36,6 +40,8 @@ module.exports = {
             try {
 
                 await sgMail.send(msg);
+                console.log(link)
+                return res.status(200).json('Un email contenant ton lien de réinitialisation a été envoyé')
 
             } catch (e) {
                 console.error(e)

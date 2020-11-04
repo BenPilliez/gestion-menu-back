@@ -24,11 +24,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
-            month: {
-                type: Sequelize.INTEGER,
-                allowNull: false
-            },
-            userId: {
+            usersId: {
                 type: Sequelize.INTEGER,
                 allowNull:false,
                 references: {

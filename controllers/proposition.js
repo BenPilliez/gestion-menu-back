@@ -3,7 +3,7 @@ const models = require('../db/models')
 module.exports = {
 
     /**
-     * Retourne les propositions de la semaine
+     * Retourne toutes les propositions de la semaine
      * @param req
      * @param res
      * @returns {Promise<void>}
@@ -12,10 +12,14 @@ module.exports = {
         console.debug('back => propController => propAll')
         try {
 
-            const props = await models.propositions.findAll({
+            const props = await models.propositions.findAndCountAll({
                 where: {
                     week: req.body.week
-                }
+                },
+                include: [{
+                    model: models.users,
+                    attributes:['id','username','avatarUrl']
+                }]
             })
 
             return res.status(200).json({count: props.count, rows: props.rows})
@@ -26,7 +30,7 @@ module.exports = {
         }
     },
     /**
-     * Retourne les propositions d'un jour
+     * Retourne les propositions du jour de la semaine sélectionnées via un select
      * @param req
      * @param res
      * @returns {Promise<void>}
@@ -38,8 +42,12 @@ module.exports = {
             const props = await models.propositions.findAndCountAll({
                 where: {
                     day: req.params.day,
-                    month: req.body.month
-                }
+                    week: req.body.week
+                },
+                include: [{
+                    model: models.users,
+                    attributes:['id','username','avatarUrl']
+                }]
             })
 
             return res.status(200).json({count: props.count, rows: props.rows})
@@ -59,7 +67,10 @@ module.exports = {
 
         try {
 
-            const prop = await models.propositions.create(req.body)
+            let body = req.body
+            body.usersId = req.user.userId
+
+            const prop = await models.propositions.create(body)
 
             return res.status(200).json(prop)
 
@@ -83,10 +94,12 @@ module.exports = {
             if (!prop) {
                 return res.status(404).json({error: 'Pas de proposition'})
             }
+            let body = req.body
+            body.usersId = req.user.userId
 
-            prop.update(req.body)
+            prop.update(body)
 
-            return res.status(200).json('Ta proposition a été mise à jourl')
+            return res.status(200).json('Ta proposition a été mise à jour')
 
         } catch (e) {
             console.error(e)
