@@ -21,7 +21,7 @@ module.exports = {
                 allowNull: false
             },
             week: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false
             },
             month: {

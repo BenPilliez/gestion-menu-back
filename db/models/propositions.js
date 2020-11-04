@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            propositions.belongsTo(model.users, {
+            propositions.belongsTo(models.users, {
                 foreignKey: 'usersId'
             })
         }
@@ -35,18 +35,18 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         week: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         },
         updatedAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         }
     }, {
         sequelize,

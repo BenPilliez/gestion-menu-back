@@ -1,5 +1,5 @@
-const express = requrie('express')
-const router = express.Router
+const express = require('express')
+const router = express.Router()
 const authController = require('../controllers/authController')
 
 const resetAuthController = require('../controllers/passwordResetController')

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            users.hasMany(model.propositions, {
+            users.hasMany(models.propositions, {
                 foreignKey: 'usersId'
             })
         }
@@ -70,12 +70,12 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         },
         updatedAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         }
     }, {
         hooks: {
@@ -93,18 +93,18 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'users',
     });
-    Users.prototype.validatePassword = function (password) {
+    users.prototype.validatePassword = function (password) {
         try {
             return bcrypt.compareSync(password, this.password)
         } catch (err) {
             console.error(err)
         }
     }
-    Users.prototype.generatePasswordReset = function () {
+    users.prototype.generatePasswordReset = function () {
         this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
         this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
 
         return resetPasswordToken
     }
-    return Users
+    return users
 };
