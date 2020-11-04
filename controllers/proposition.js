@@ -18,7 +18,7 @@ module.exports = {
                 },
                 include: [{
                     model: models.users,
-                    attributes:['id','username','avatarUrl']
+                    attributes: ['id', 'username', 'avatarUrl']
                 }]
             })
 
@@ -35,7 +35,7 @@ module.exports = {
      * @param res
      * @returns {Promise<void>}
      */
-    propGet: async (req, res) => {
+    propGetWeekList: async (req, res) => {
         console.debug("back => propController => propGet")
         try {
 
@@ -46,11 +46,39 @@ module.exports = {
                 },
                 include: [{
                     model: models.users,
-                    attributes:['id','username','avatarUrl']
+                    attributes: ['id', 'username', 'avatarUrl']
                 }]
             })
 
             return res.status(200).json({count: props.count, rows: props.rows})
+
+        } catch (e) {
+            console.error(e)
+            return res.status(500).json({error: e})
+        }
+    },
+    /**
+     *
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    propDetails: async (req, res) => {
+        console.debug("back => propController => propDetails")
+        try {
+            const prop = await models.propositions.findByPk(req.params.id,
+                {
+                    include: {
+                        model: models.users,
+                        attributes: ['avatarUrl', 'id', 'username']
+                    }
+                })
+
+            if (!prop) {
+                return res.status(404).json({error: "Aucune proposition avec cet identifiant"})
+            }
+
+            return res.status(200).json(prop)
 
         } catch (e) {
             console.error(e)
