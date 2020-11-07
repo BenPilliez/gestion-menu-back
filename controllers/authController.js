@@ -63,7 +63,9 @@ module.exports = {
                     {
                         id: user.id,
                         email: user.email,
-                        username: user.username
+                        username: user.username,
+                        avatarUrl: user.avatarUrl,
+                        initial: user.initial
                     },
                 token: token
             });
