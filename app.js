@@ -14,7 +14,7 @@ const app = express();
 
 // Middleware
 app.use(express.urlencoded({extended: true}));
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/api/static', express.static(path.join(__dirname, 'public')))
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
@@ -27,7 +27,7 @@ app.use('/api/propositions',propositionsRouter)
 
 // 404 Not found
 app.use(function (req, res, next) {
-    res.status(404).send('Oops aucune page');
+    res.status(404).send({error: 'Oops aucune page'});
     next();
 });
 

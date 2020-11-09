@@ -42,7 +42,7 @@ module.exports = {
             const props = await models.propositions.findAndCountAll({
                 where: {
                     day: req.params.day,
-                    week: req.body.week
+                    week: req.query.week
                 },
                 include: [{
                     model: models.users,

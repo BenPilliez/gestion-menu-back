@@ -21,6 +21,38 @@ module.exports = (sequelize, DataTypes) => {
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut un text'
+                },
+                notNull: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut un text'
+                }
+            }
+        },
+        title:{
+          type: DataTypes.STRING,
+          allowNull:false,
+            validate: {
+                notEmpty: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut un titre'
+                },
+                notNull: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut un titre'
+                }
+            }
+        },
+        imageUrl: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut une image'
+                },
+                notNull: {
+                    msg: 'Allez on rempli le formulaire correctement, il me faut une image'
+                }
+            }
         },
         day: {
             type: DataTypes.STRING,
