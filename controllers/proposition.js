@@ -97,6 +97,8 @@ module.exports = {
 
             let body = req.body
             body.usersId = req.user.userId
+            body.imageUrl = req.file ? req.file.filename : null
+            body.period = req.body.periodValue
 
             const prop = await models.propositions.create(body)
 
@@ -104,7 +106,7 @@ module.exports = {
 
         } catch (e) {
             console.error(e)
-            return res.status(500).json({error: e})
+            return res.status(500).json({error: e.message})
         }
 
     },
@@ -124,6 +126,8 @@ module.exports = {
             }
             let body = req.body
             body.usersId = req.user.userId
+            body.imageUrl = req.file ? req.file.filename : prop.imageUrl
+            body.period = req.body.periodValue
 
             prop.update(body)
 
