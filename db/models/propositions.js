@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
+        description:{
+          type: DataTypes.TEXT,
+          allowNull: true
+        },
         day: {
             type: DataTypes.STRING,
             allowNull: false

@@ -97,7 +97,7 @@ module.exports = {
 
             let body = req.body
             body.usersId = req.user.userId
-            body.imageUrl = req.file ? req.file.filename : null
+            body.imageUrl = req.file ? req.file.filename : 'pasta.jpg'
             body.period = req.body.periodValue
 
             const prop = await models.propositions.create(body)
