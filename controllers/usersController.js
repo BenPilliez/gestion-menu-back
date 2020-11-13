@@ -43,9 +43,6 @@ module.exports = {
             const userAvatar = user.avatarUrl ? user.avatarUrl : null
             const file = req.file ? req.file.filename : userAvatar
 
-            console.log("bite")
-            console.log(req.file)
-
             user.update({
                 avatarUrl: file
             })

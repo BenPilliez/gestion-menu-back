@@ -21,4 +21,4 @@ const storage = multer.diskStorage({
     }
 })
 
-module.exports = multer({storage}).single('avatar');
+module.exports = multer({storage}).single('avatars');

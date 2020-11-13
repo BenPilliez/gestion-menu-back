@@ -6,6 +6,6 @@ const multer = require('../helpers/multer-config')
 
 router.get('/:id', verifToken, userController.getUser)
 router.put('/password/:id', verifToken, multer, userController.updatePassword)
-router.put('/avatar/:id', verifToken, userController.updateUserAvatar)
+router.put('/avatar/:id', verifToken,multer, userController.updateUserAvatar)
 
 module.exports = router
