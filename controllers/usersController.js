@@ -40,11 +40,17 @@ module.exports = {
                 return res.status(404).json({error: 'Aucun utilisateur'})
             }
 
-            const file = req.file ? req.file.filename : null
+            const userAvatar = user.avatarUrl ? user.avatarUrl : null
+            const file = req.file ? req.file.filename : userAvatar
+
+            console.log("bite")
+            console.log(req.file)
 
             user.update({
                 avatarUrl: file
             })
+
+            return res.sendStatus(200)
 
         } catch (e) {
             console.error(e)
@@ -67,11 +73,11 @@ module.exports = {
                 return res.status(404).json({error: 'Aucun utilisateur'})
             }
 
-            try {
-                user.validatePassword(req.body.password)
-            } catch (e) {
+            let valid = await user.validatePassword(req.body.oldPassword)
+
+            if (!valid) {
                 console.error('Ancien mot de passe correspond pas')
-                return res.status(401).json({
+                return res.status(404).json({
                     error: 'L\'ancien mot de passe ne correspond pas'
                 })
             }
