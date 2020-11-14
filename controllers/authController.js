@@ -81,7 +81,7 @@ module.exports = {
     account: async (req, res) => {
         try {
 
-            let currentDate = moment().format('L')
+            let currentDate = moment()
             let numberLastWeekOfMonth = moment().endOf('month').week()
             let lastDay = moment().week(numberLastWeekOfMonth).endOf('isoWeek').format('L')
 
@@ -98,7 +98,7 @@ module.exports = {
             if (props.count > 0) {
                 return res.json({totalItems: props.count, items: props.rows, totalPages: Math.ceil(props.count / 10)})
             }
-            return res.status(404).json("Tu n'as encore rien proposé");
+            return res.status(200).json("Tu n'as encore rien proposé");
         } catch (err) {
             console.error(err)
             return res.status(500).json(err)
