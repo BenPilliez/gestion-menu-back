@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
                 user.password = bcrypt.hashSync(user.password, hash);
             },
             beforeUpdate(user, options) {
-                if (user.password) {
+                if (user.password && options.fields.includes('password')) {
                     const hash = bcrypt.genSaltSync(12);
                     user.password = bcrypt.hashSync(user.password, hash);
                 }
