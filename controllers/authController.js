@@ -1,5 +1,7 @@
 const models = require('../db/models')
 const jwt = require('jsonwebtoken')
+const {getPagingData} = require("../helpers/getPagingData");
+const {Op} = require("sequelize");
 
 module.exports = {
     /**
@@ -32,7 +34,7 @@ module.exports = {
                 where: {
                     username: req.body.username
                 },
-                attributes: [ 'id', 'email', 'username', 'password','avatarUrl']
+                attributes: ['id', 'email', 'username', 'password', 'avatarUrl']
             });
 
             if (!user) {
@@ -77,14 +79,25 @@ module.exports = {
     },
     account: async (req, res) => {
         try {
-            let user = await models.users.findByPk(req.user.userId, {
-                include: [
-                    {
-                        model: models.propositions
+
+            var date = new Date();
+            var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+            let props = await models.propositions.findAndCountAll({
+                where: {
+                    usersId: req.user.userId,
+                    createdAt: {
+                        [Op.between]: [firstDay, lastDay]
                     }
-                ]
+                },
+                distinct: true
             })
-            return res.json(user);
+
+            if (props.count > 0) {
+                return res.json({totalItems: props.count, items: props.rows, totalPages: Math.ceil(props.count / 10)})
+            }
+            return res.status(404).json("Tu n'as encore rien proposé");
         } catch (err) {
             console.error(err)
             return res.status(500).json(err)
