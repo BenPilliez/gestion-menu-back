@@ -1,6 +1,8 @@
 const models = require('../db/models')
 const jwt = require('jsonwebtoken')
 const {Op} = require("sequelize");
+const moment = require('moment')
+require('moment/locale/fr')
 
 module.exports = {
     /**
@@ -79,15 +81,15 @@ module.exports = {
     account: async (req, res) => {
         try {
 
-            var date = new Date();
-            var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-            var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            let currentDate = moment().format('L')
+            let numberLastWeekOfMonth = moment().endOf('month').week()
+            let lastDay = moment().week(numberLastWeekOfMonth).endOf('isoWeek').format('L')
 
             let props = await models.propositions.findAndCountAll({
                 where: {
                     usersId: req.user.userId,
                     createdAt: {
-                        [Op.between]: [firstDay, lastDay]
+                        [Op.between]: [currentDate, lastDay]
                     }
                 },
                 distinct: true
