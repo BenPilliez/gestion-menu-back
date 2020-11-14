@@ -81,22 +81,27 @@ module.exports = {
     account: async (req, res) => {
         try {
 
-            let currentDate = moment()
+            let currentWeek = moment().week()
             let numberLastWeekOfMonth = moment().endOf('month').week()
-            let lastDay = moment().week(numberLastWeekOfMonth).endOf('isoWeek').format('L')
 
             let props = await models.propositions.findAndCountAll({
                 where: {
                     usersId: req.user.userId,
-                    createdAt: {
-                        [Op.between]: [currentDate, lastDay]
-                    }
+                    week:{
+                        [Op.between]:[currentWeek,numberLastWeekOfMonth]
+                    },
                 },
-                distinct: true
             })
 
+
+
             if (props.count > 0) {
-                return res.json({totalItems: props.count, items: props.rows, totalPages: Math.ceil(props.count / 10)})
+                let filterArray = props.rows.filter((item) => {
+                    const date = moment().day(item.day).week(item.week)
+
+                    return date.isSameOrAfter(moment())
+                })
+                return res.json({totalItems: filterArray.length, items: filterArray, totalPages: Math.ceil(filterArray.length / 10)})
             }
             return res.status(200).json("Tu n'as encore rien proposé");
         } catch (err) {
