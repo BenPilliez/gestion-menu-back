@@ -10,5 +10,6 @@ router.get('/details/:id',verifToken, propController.propDetails)
 router.post('/',verifToken,multer, propController.propCreate)
 router.put('/:id',verifToken,multer, propController.propUpdate)
 router.delete('/:id',verifToken, propController.propDelete)
+router.post('/copy/:id', propController.propCopy)
 
 module.exports = router

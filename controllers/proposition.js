@@ -164,6 +164,33 @@ module.exports = {
             return res.status(500).json({error: e})
         }
 
-    }
+    },
+    /**
+     * Créer une proposition
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    propCopy: async (req, res) => {
 
+        try {
+
+            let copyProps = await models.propositions.findByPk(req.params.id,
+                {
+                    attributes:['content', 'imageUrl', 'userId', 'period','tilte', 'description']
+                });
+
+            copyProps['week'] = req.body.week
+            copyProps['day'] = req.body.period
+
+            const prop = await models.propositions.create(copyProps)
+
+            return res.status(200).json(prop)
+
+        } catch (e) {
+            console.error(e)
+            return res.status(500).json({error: e.message})
+        }
+
+    }
 }

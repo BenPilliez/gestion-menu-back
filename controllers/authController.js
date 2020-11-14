@@ -1,6 +1,5 @@
 const models = require('../db/models')
 const jwt = require('jsonwebtoken')
-const {getPagingData} = require("../helpers/getPagingData");
 const {Op} = require("sequelize");
 
 module.exports = {
