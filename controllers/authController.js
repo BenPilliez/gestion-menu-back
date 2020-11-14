@@ -32,7 +32,7 @@ module.exports = {
                 where: {
                     username: req.body.username
                 },
-                attributes: [ 'id', 'email', 'username', 'password']
+                attributes: [ 'id', 'email', 'username', 'password','avatarUrl']
             });
 
             if (!user) {

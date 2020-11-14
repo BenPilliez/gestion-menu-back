@@ -34,7 +34,9 @@ module.exports = {
     updateUserAvatar: async (req, res) => {
         console.debug("back => usersController => updateUserAvatar")
         try {
-            const user = await models.users.findByPk(req.params.id)
+            const user = await models.users.findByPk(req.params.id,{
+                attributes: ['id','username','email','avatarUrl']
+            })
 
             if (!user) {
                 return res.status(404).json({error: 'Aucun utilisateur'})
@@ -47,7 +49,7 @@ module.exports = {
                 avatarUrl: file
             })
 
-            return res.sendStatus(200)
+            return res.json(user)
 
         } catch (e) {
             console.error(e)
