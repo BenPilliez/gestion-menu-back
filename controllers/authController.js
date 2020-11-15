@@ -90,17 +90,20 @@ module.exports = {
                     week:{
                         [Op.between]:[currentWeek,numberLastWeekOfMonth]
                     },
-                },
+                }
             })
-
-
 
             if (props.count > 0) {
                 let filterArray = props.rows.filter((item) => {
                     const date = moment().day(item.day).week(item.week)
-
                     return date.isSameOrAfter(moment())
+                }).sort(function (a, b){
+                    let dateA = moment(a.date)
+                    let dateB = moment(b.date)
+
+                    return dateA.subtract(dateB)
                 })
+
                 return res.json({totalItems: filterArray.length, items: filterArray, totalPages: Math.ceil(filterArray.length / 10)})
             }
             return res.status(200).json("Tu n'as encore rien proposé");

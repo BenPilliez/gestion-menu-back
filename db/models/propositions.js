@@ -2,6 +2,8 @@
 const {
     Model
 } = require('sequelize');
+const moment = require('moment');
+require('moment/locale/fr')
 module.exports = (sequelize, DataTypes) => {
     class propositions extends Model {
         /**
@@ -79,6 +81,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: sequelize.NOW
+        },
+        date: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                return moment().day(this.day).week(this.week)
+            }
         }
     }, {
         sequelize,
