@@ -177,13 +177,21 @@ module.exports = {
 
             let copyProps = await models.propositions.findByPk(req.params.id,
                 {
-                    attributes:['content', 'imageUrl', 'userId', 'period','tilte', 'description']
+                    attributes:['content', 'imageUrl', 'usersId', 'period','title', 'description']
                 });
 
-            copyProps['week'] = req.body.week
-            copyProps['day'] = req.body.period
+            let newProps= {
+                content: copyProps.content,
+                imageUrl: copyProps.imageUrl,
+                usersId: copyProps.usersId,
+                period: copyProps.period,
+                title: copyProps.title,
+                description: copyProps.description,
+                week: req.body.week,
+                day: req.body.day
+            }
 
-            const prop = await models.propositions.create(copyProps)
+            const prop = await models.propositions.create(newProps)
 
             return res.status(200).json(prop)
 
