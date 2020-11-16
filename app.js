@@ -7,6 +7,7 @@ const path = require('path');
 const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
+const indexRouter = require('./routes/index')
 
 if (typeof(PhusionPassenger) !== 'undefined') {
     PhusionPassenger.configure({ autoInstall: false });
@@ -24,9 +25,18 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Routage
+app.use('/', indexRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/propositions', propositionsRouter)
+
+//Socket.io
+const server = require('https').createServer(app);
+const {io} = require('./helpers/socket')
+io.attach(server, {
+    cors:{}
+})
+
 
 // 404 Not found
 app.use(function (req, res, next) {
@@ -38,5 +48,5 @@ app.use(function (req, res, next) {
 if (typeof(PhusionPassenger) !== 'undefined') {
     app.listen('passenger');
 } else {
-    app.listen(process.env.PORT);
+    server.listen(process.env.PORT);
 }
