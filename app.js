@@ -8,6 +8,7 @@ const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
 const indexRouter = require('./routes/index')
+const fs = require('fs')
 
 if (typeof(PhusionPassenger) !== 'undefined') {
     PhusionPassenger.configure({ autoInstall: false });
@@ -30,8 +31,13 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/propositions', propositionsRouter)
 
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
 //Socket.io
-const server = require('https').createServer(app);
+const server = require('https').createServer(app, options);
 const {io} = require('./helpers/socket')
 io.attach(server, {
     cors:{}
@@ -46,7 +52,7 @@ app.use(function (req, res, next) {
 
 
 if (typeof(PhusionPassenger) !== 'undefined') {
-    app.listen('passenger');
+    server.listen('passenger');
 } else {
     server.listen(process.env.PORT);
 }
