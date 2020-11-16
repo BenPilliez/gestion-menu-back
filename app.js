@@ -31,13 +31,15 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/propositions', propositionsRouter)
 
+/*
 const options = {
     key: fs.readFileSync('key.pem'),
     cert: fs.readFileSync('cert.pem')
 };
+*/
 
 //Socket.io
-const server = require('https').createServer(app, options);
+const server = require('http').createServer(app);
 const {io} = require('./helpers/socket')
 io.attach(server, {
     cors:{}
