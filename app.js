@@ -9,8 +9,8 @@ const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
 const indexRouter = require('./routes/index')
 
-if (typeof(PhusionPassenger) !== 'undefined') {
-    PhusionPassenger.configure({ autoInstall: false });
+if (typeof (PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({autoInstall: false});
 }
 
 // Initilisation du server express
@@ -24,6 +24,12 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(cors());
 
+const server = require('http').createServer(app);
+    const {io} = require('./helpers/socket')
+    io.attach(server, {
+        cors: {}
+    })
+
 // Routage
 app.use('', indexRouter)
 app.use('/api/auth', authRouter)
@@ -36,9 +42,8 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-if (typeof(PhusionPassenger) !== 'undefined') {
-    app.listen('passenger');
+if (typeof (PhusionPassenger) !== 'undefined') {
+    server.listen('passenger');
 } else {
-    app.listen(process.env.PORT);
+    server.listen(process.env.PORT);
 }

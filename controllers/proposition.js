@@ -1,4 +1,5 @@
 const models = require('../db/models')
+const {Socket} = require('../helpers/socket')
 
 module.exports = {
 
@@ -101,7 +102,7 @@ module.exports = {
             body.period = req.body.periodValue
 
             const prop = await models.propositions.create(body)
-
+            Socket.emit('PropCreated', prop)
             return res.status(200).json(prop)
 
         } catch (e) {
