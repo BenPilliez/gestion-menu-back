@@ -101,7 +101,14 @@ module.exports = {
             body.imageUrl = req.file ? req.file.filename : 'pasta.jpg'
             body.period = req.body.periodValue
 
-            const prop = await models.propositions.create(body)
+            const created = await models.propositions.create(body)
+            const prop = await models.propositions.findByPk(created.id, {
+                include: {
+                    model: models.users,
+                    attributes: ['avatarUrl', 'id', 'username']
+                }
+            })
+
             Socket.emit('PropCreated', prop)
             return res.status(200).json(prop)
 
