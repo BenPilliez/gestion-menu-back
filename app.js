@@ -7,6 +7,7 @@ const path = require('path');
 const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
+const indexRouter = require('./routes/index')
 
 if (typeof(PhusionPassenger) !== 'undefined') {
     PhusionPassenger.configure({ autoInstall: false });
@@ -24,6 +25,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Routage
+app.use('', indexRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/propositions', propositionsRouter)
