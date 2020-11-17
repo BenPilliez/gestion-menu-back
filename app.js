@@ -8,7 +8,7 @@ const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
 const indexRouter = require('./routes/index')
-const fs = require('fs')
+const fs = require('fs');
 
 if (typeof(PhusionPassenger) !== 'undefined') {
     PhusionPassenger.configure({ autoInstall: false });
@@ -16,6 +16,11 @@ if (typeof(PhusionPassenger) !== 'undefined') {
 
 // Initilisation du server express
 const app = express();
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
 
 // Middleware
 app.use(express.urlencoded({extended: true}));
@@ -25,33 +30,24 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(cors());
 
-// Routage
-app.use('/', indexRouter)
-app.use('/api/auth', authRouter)
-app.use('/api/user', userRouter)
-app.use('/api/propositions', propositionsRouter)
-
-/*
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-};
-*/
-
 //Socket.io
-const server = require('http').createServer(app);
+const server = require('https').createServer(app, options);
 const {io} = require('./helpers/socket')
 io.attach(server, {
     cors:{}
 })
 
+// Routage
+app.use('', indexRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
+app.use('/api/propositions', propositionsRouter)
 
 // 404 Not found
 app.use(function (req, res, next) {
     res.status(404).send({error: 'Oops aucune page'});
     next();
 });
-
 
 if (typeof(PhusionPassenger) !== 'undefined') {
     server.listen('passenger');

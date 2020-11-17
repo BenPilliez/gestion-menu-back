@@ -127,3 +127,6 @@ dist
 
 /public/avatars/*
 /public/propositions/*
+.htaccess
+cert.pem
+key.pem
