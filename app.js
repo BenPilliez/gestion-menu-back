@@ -8,19 +8,13 @@ const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
 const indexRouter = require('./routes/index')
-const fs = require('fs');
 
-if (typeof(PhusionPassenger) !== 'undefined') {
-    PhusionPassenger.configure({ autoInstall: false });
+if (typeof (PhusionPassenger) !== 'undefined') {
+    PhusionPassenger.configure({autoInstall: false});
 }
 
 // Initilisation du server express
 const app = express();
-
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-};
 
 // Middleware
 app.use(express.urlencoded({extended: true}));
@@ -30,12 +24,11 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(cors());
 
-//Socket.io
-const server = require('https').createServer(app, options);
-const {io} = require('./helpers/socket')
-io.attach(server, {
-    cors:{}
-})
+const server = require('http').createServer(app);
+    const {io} = require('./helpers/socket')
+    io.attach(server, {
+        cors: {}
+    })
 
 // Routage
 app.use('', indexRouter)
@@ -49,7 +42,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-if (typeof(PhusionPassenger) !== 'undefined') {
+if (typeof (PhusionPassenger) !== 'undefined') {
     server.listen('passenger');
 } else {
     server.listen(process.env.PORT);
