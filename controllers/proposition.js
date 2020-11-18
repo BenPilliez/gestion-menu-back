@@ -164,8 +164,8 @@ module.exports = {
             }
 
             prop.destroy()
-
-            return res.status(200).json('Proposition supprimé')
+            Socket.emit('PropDelete', prop)
+            return res.status(200).json(prop)
 
         } catch (e) {
             console.error(e)
@@ -185,10 +185,10 @@ module.exports = {
 
             let copyProps = await models.propositions.findByPk(req.params.id,
                 {
-                    attributes:['content', 'imageUrl', 'usersId', 'period','title', 'description']
+                    attributes: ['content', 'imageUrl', 'usersId', 'period', 'title', 'description']
                 });
 
-            let newProps= {
+            let newProps = {
                 content: copyProps.content,
                 imageUrl: copyProps.imageUrl,
                 usersId: copyProps.usersId,
@@ -199,8 +199,16 @@ module.exports = {
                 day: req.body.day
             }
 
-            const prop = await models.propositions.create(newProps)
+            const propCreated = await models.propositions.create(newProps)
+            const prop = await models.propositions.findByPk(propCreated.id, {
+                include: {
+                    model: models.users,
+                    attributes: ['avatarUrl', 'id', 'username']
+                }
 
+            })
+
+            Socket.emit('PropCreated', prop)
             return res.status(200).json(prop)
 
         } catch (e) {
