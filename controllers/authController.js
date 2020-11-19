@@ -93,10 +93,13 @@ module.exports = {
                 }
             })
 
+            const currentDate = moment()
+
             if (props.count > 0) {
-                let filterArray = props.rows.filter((item) => {
+                let filterArray = await props.rows.filter((item) => {
                     const date = moment().day(item.day).week(item.week)
-                    return date.isSameOrAfter(moment())
+                    return date.isSameOrAfter(currentDate)
+
                 }).sort(function (a, b){
                     let dateA = moment(a.date)
                     let dateB = moment(b.date)

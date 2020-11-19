@@ -127,7 +127,12 @@ module.exports = {
     propUpdate: async (req, res) => {
         try {
 
-            const prop = await models.propositions.findByPk(req.params.id)
+            const prop = await models.propositions.findByPk(req.params.id,{
+                include:{
+                    model: models.users,
+                    attributes: ['avatarUrl', 'id', 'username']
+                }
+            })
 
             if (!prop) {
                 return res.status(404).json({error: 'Pas de proposition'})
@@ -138,7 +143,7 @@ module.exports = {
             body.period = req.body.periodValue
 
             prop.update(body)
-
+            Socket.emit('PropEdited', prop)
             return res.status(200).json('Ta proposition a été mise à jour')
 
         } catch (e) {
