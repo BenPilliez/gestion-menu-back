@@ -1,5 +1,8 @@
 const models = require('../db/models')
 const {Socket} = require('../helpers/socket')
+const {Op} = require("sequelize")
+const moment = require('moment')
+require("moment/locale/fr")
 
 module.exports = {
 
@@ -109,7 +112,37 @@ module.exports = {
                 }
             })
 
+            const users = await models.users.findAll({
+                where: {
+                    id: {
+                        [Op.ne]: req.user.userId
+                    }
+                },
+                attributes: ['id']
+            })
+
+            const notif = {
+                title: prop.title,
+                message: `Nouveau post de ${req.user.username} pour ${moment().day(prop.day).week(prop.week).format('LL')}`,
+                propositionsId: prop.id,
+                propositionsDay: prop.day,
+                propositionsWeek: prop.week,
+                propositionImg: prop.imageUrl
+            }
+
+            users.map(async (user) => {
+                await models.notifications.create({
+                    title: prop.title,
+                    message: `Nouveau post de ${req.user.username} pour ${moment().day(prop.day).week(prop.week).format('LL')}`,
+                    usersId: user.id,
+                    propositionsId: prop.id,
+                    propositionsDay: prop.day,
+                    propositionsWeek: prop.week
+                })
+            })
+
             Socket.emit('PropCreated', prop)
+            Socket.emit('notification', notif)
             return res.status(200).json(prop)
 
         } catch (e) {
@@ -127,7 +160,12 @@ module.exports = {
     propUpdate: async (req, res) => {
         try {
 
-            const prop = await models.propositions.findByPk(req.params.id)
+            const prop = await models.propositions.findByPk(req.params.id, {
+                include: {
+                    model: models.users,
+                    attributes: ['avatarUrl', 'id', 'username']
+                }
+            })
 
             if (!prop) {
                 return res.status(404).json({error: 'Pas de proposition'})
@@ -138,7 +176,7 @@ module.exports = {
             body.period = req.body.periodValue
 
             prop.update(body)
-
+            Socket.emit('PropEdited', prop)
             return res.status(200).json('Ta proposition a été mise à jour')
 
         } catch (e) {
