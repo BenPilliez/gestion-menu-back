@@ -135,14 +135,15 @@ module.exports = {
                     title: prop.title,
                     message: `Nouveau post de ${req.user.username} pour ${moment().day(prop.day).week(prop.week).format('LL')}`,
                     usersId: user.id,
+                    read: false,
                     propositionsId: prop.id,
                     propositionsDay: prop.day,
-                    propositionsWeek: prop.week
+                    propositionsWeek: prop.week,
+                    propositionImg: prop.imageUrl
                 })
             })
 
             Socket.emit('PropCreated', prop)
-            Socket.emit('notification', notif)
             return res.status(200).json(prop)
 
         } catch (e) {
