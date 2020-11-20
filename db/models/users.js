@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
             users.hasMany(models.propositions, {
                 foreignKey: 'usersId'
             })
+
+            users.hasMany(models.notifications,{
+                foreignKey: 'usersId'
+            })
         }
     }
 

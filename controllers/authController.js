@@ -52,7 +52,8 @@ module.exports = {
             let token = jwt.sign(
                 {
                     userId: user.id,
-                    email: user.email
+                    email: user.email,
+                    username: user.username
                 },
                 process.env.JWT_SECRET,
                 {
@@ -68,7 +69,7 @@ module.exports = {
                         email: user.email,
                         username: user.username,
                         avatarUrl: user.avatarUrl,
-                        initial: user.initial
+                        notifications: user.notifications
                     },
                 token: token
             });

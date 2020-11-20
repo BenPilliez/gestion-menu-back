@@ -8,6 +8,7 @@ const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const propositionsRouter = require('./routes/proposition')
 const indexRouter = require('./routes/index')
+const notificationsRouter = require('./routes/notifications')
 
 if (typeof (PhusionPassenger) !== 'undefined') {
     PhusionPassenger.configure({autoInstall: false});
@@ -35,6 +36,7 @@ app.use('', indexRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/propositions', propositionsRouter)
+app.use('/api/notifications', notificationsRouter)
 
 // 404 Not found
 app.use(function (req, res, next) {
