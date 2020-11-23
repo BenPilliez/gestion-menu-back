@@ -18,7 +18,7 @@ module.exports = {
 
             const props = await models.propositions.findAndCountAll({
                 where: {
-                    week: req.body.week
+                    week: req.params.week
                 },
                 include: [{
                     model: models.users,
@@ -54,6 +54,7 @@ module.exports = {
                 }]
             })
 
+            console.log(props)
             return res.status(200).json({count: props.count, rows: props.rows})
 
         } catch (e) {

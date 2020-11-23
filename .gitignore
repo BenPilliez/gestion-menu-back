@@ -128,3 +128,4 @@ dist
 /public/avatars/*
 /public/propositions/*
 .htaccess
+password.js
