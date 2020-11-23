@@ -54,7 +54,6 @@ module.exports = {
                 }]
             })
 
-            console.log(props)
             return res.status(200).json({count: props.count, rows: props.rows})
 
         } catch (e) {
@@ -121,15 +120,6 @@ module.exports = {
                 },
                 attributes: ['id']
             })
-
-            const notif = {
-                title: prop.title,
-                message: `Nouveau post de ${req.user.username} pour ${moment().day(prop.day).week(prop.week).format('LL')}`,
-                propositionsId: prop.id,
-                propositionsDay: prop.day,
-                propositionsWeek: prop.week,
-                propositionImg: prop.imageUrl
-            }
 
             users.map(async (user) => {
                 await models.notifications.create({
