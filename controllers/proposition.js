@@ -203,6 +203,12 @@ module.exports = {
                 return res.status(404).json({error: 'Pas de proposition'})
             }
 
+            await models.notifications.destroy({
+                where:{
+                    propositionsId: prop.id
+                }
+            })
+
             prop.destroy()
             Socket.emit('PropDelete', prop)
             return res.status(200).json(prop)
