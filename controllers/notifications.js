@@ -29,9 +29,10 @@ module.exports = {
 
         try {
 
+            console.log(req.user)
             const notification = await models.notifications.findOne({
                 where: {
-                    usersId: req.user.usersId,
+                    usersId: req.user.userId,
                     propositionsId: req.params.prop_id
                 }
             })
