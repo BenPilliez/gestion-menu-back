@@ -1,4 +1,4 @@
-const models = require('../db/models')
+const models = require("../db/models");
 
 module.exports = {
 
@@ -9,19 +9,19 @@ module.exports = {
      * @returns {Promise<this>}
      */
     getUser: async (req, res) => {
-        console.debug("back => usersController => getUser")
+        console.debug("back => usersController => getUser");
         try {
-            const user = await models.users.findByPk(req.params.id)
+            const user = await models.users.findByPk(req.params.id);
 
             if (!user) {
-                return res.status(404).json({error: 'Aucun utilisateur'})
+                return res.status(404).json({error: "Aucun utilisateur"});
             }
 
-            return res.status(200).json(user)
+            return res.status(200).json(user);
 
         } catch (e) {
             console.error(e);
-            return res.status(500).json({error: e})
+            return res.status(500).json({error: e});
         }
     },
 
@@ -32,28 +32,28 @@ module.exports = {
      * @returns {Promise<this>}
      */
     updateUserAvatar: async (req, res) => {
-        console.debug("back => usersController => updateUserAvatar")
+        console.debug("back => usersController => updateUserAvatar");
         try {
-            const user = await models.users.findByPk(req.params.id,{
-                attributes: ['id','username','email','avatarUrl']
-            })
+            const user = await models.users.findByPk(req.params.id, {
+                attributes: ["id", "username", "email", "avatarUrl"]
+            });
 
             if (!user) {
-                return res.status(404).json({error: 'Aucun utilisateur'})
+                return res.status(404).json({error: "Aucun utilisateur"});
             }
 
-            const userAvatar = user.avatarUrl ? user.avatarUrl : null
-            const file = req.file ? req.file.filename : userAvatar
+            const userAvatar = user.avatarUrl ? user.avatarUrl : null;
+            const file = req.file ? req.file.filename : userAvatar;
 
             user.update({
                 avatarUrl: file
-            })
+            });
 
-            return res.json(user)
+            return res.json(user);
 
         } catch (e) {
-            console.error(e)
-            return res.status(500).json({error: e})
+            console.error(e);
+            return res.status(500).json({error: e});
         }
     },
     /**
@@ -63,33 +63,33 @@ module.exports = {
      * @returns {Promise<this>}
      */
     updatePassword: async (req, res) => {
-        console.debug("back => usersController => updatePassword")
+        console.debug("back => usersController => updatePassword");
         try {
 
-            let user = await models.users.findByPk(req.params.id)
+            let user = await models.users.findByPk(req.params.id);
 
             if (!user) {
-                return res.status(404).json({error: 'Aucun utilisateur'})
+                return res.status(404).json({error: "Aucun utilisateur"});
             }
 
-            let valid = await user.validatePassword(req.body.oldPassword)
+            let valid = await user.validatePassword(req.body.oldPassword);
 
             if (!valid) {
-                console.error('Ancien mot de passe correspond pas')
+                console.error("Ancien mot de passe correspond pas");
                 return res.status(404).json({
-                    error: 'L\'ancien mot de passe ne correspond pas'
-                })
+                    error: "L'ancien mot de passe ne correspond pas"
+                });
             }
 
             user.update({
                 password: req.body.password
-            })
+            });
 
-            return res.status(200).json('Ton mot de passe a été mis à jour')
+            return res.status(200).json("Ton mot de passe a été mis à jour");
 
         } catch (e) {
-            console.error(e)
-            return res.status(500).json({error: e})
+            console.error(e);
+            return res.status(500).json({error: e});
         }
     }
-}
+};

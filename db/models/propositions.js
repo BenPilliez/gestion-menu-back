@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 const {
     Model
-} = require('sequelize');
-const moment = require('moment');
-require('moment/locale/fr')
+} = require("sequelize");
+const moment = require("moment");
+require("moment/locale/fr");
 module.exports = (sequelize, DataTypes) => {
     class propositions extends Model {
         /**
@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             propositions.belongsTo(models.users, {
-                foreignKey: 'usersId'
-            })
+                foreignKey: "usersId"
+            });
         }
     }
 
@@ -25,22 +25,22 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un text'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un text"
                 },
                 notNull: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un text'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un text"
                 }
             }
         },
-        title:{
-          type: DataTypes.STRING,
-          allowNull:false,
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un titre'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un titre"
                 },
                 notNull: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un titre'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un titre"
                 }
             }
         },
@@ -49,16 +49,16 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut une image'
+                    msg: "Allez on rempli le formulaire correctement, il me faut une image"
                 },
                 notNull: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut une image'
+                    msg: "Allez on rempli le formulaire correctement, il me faut une image"
                 }
             }
         },
-        description:{
-          type: DataTypes.TEXT,
-          allowNull: true
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         day: {
             type: DataTypes.STRING,
@@ -85,12 +85,12 @@ module.exports = (sequelize, DataTypes) => {
         date: {
             type: DataTypes.VIRTUAL,
             get() {
-                return moment().day(this.day).week(this.week)
+                return moment().day(this.day).week(this.week);
             }
         }
     }, {
         sequelize,
-        modelName: 'propositions',
+        modelName: "propositions",
     });
     return propositions;
 };

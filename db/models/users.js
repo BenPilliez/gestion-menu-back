@@ -1,7 +1,7 @@
-'use strict';
-const {Model} = require('sequelize');
-const bcrypt = require('bcrypt')
-const crypto = require('crypto')
+"use strict";
+const {Model} = require("sequelize");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
     class users extends Model {
@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             users.hasMany(models.propositions, {
-                foreignKey: 'usersId'
-            })
+                foreignKey: "usersId"
+            });
 
-            users.hasMany(models.notifications,{
-                foreignKey: 'usersId'
-            })
+            users.hasMany(models.notifications, {
+                foreignKey: "usersId"
+            });
         }
     }
 
@@ -38,13 +38,13 @@ module.exports = (sequelize, DataTypes) => {
             },
             validate: {
                 notEmpty: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un email'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un email"
                 },
                 notNull: {
-                    msg: 'Allez on rempli le formulaire correctement, il me faut un email'
+                    msg: "Allez on rempli le formulaire correctement, il me faut un email"
                 },
                 isEmail: {
-                    msg: 'C\'est une adresse mail ça ?'
+                    msg: "C'est une adresse mail ça ?"
                 }
             }
         },
@@ -53,10 +53,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notNull: {
-                    msg: 'Et le mot de passe ?'
+                    msg: "Et le mot de passe ?"
                 },
                 notEmpty: {
-                    msg: 'Et le mot de passe ?'
+                    msg: "Et le mot de passe ?"
                 }
             }
         },
@@ -89,28 +89,28 @@ module.exports = (sequelize, DataTypes) => {
                 user.password = bcrypt.hashSync(user.password, hash);
             },
             beforeUpdate(user, options) {
-                if (user.password && options.fields.includes('password')) {
+                if (user.password && options.fields.includes("password")) {
                     const hash = bcrypt.genSaltSync(12);
                     user.password = bcrypt.hashSync(user.password, hash);
                 }
             }
         },
         sequelize,
-        modelName: 'users',
+        modelName: "users",
     });
     users.prototype.validatePassword = function (password) {
         try {
-            return bcrypt.compareSync(password, this.password)
+            return bcrypt.compareSync(password, this.password);
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
-    }
+    };
     users.prototype.generatePasswordReset = function () {
-        this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+        this.resetPasswordToken = crypto.randomBytes(20).toString("hex");
         this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
 
-        this.save()
-        return this.resetPasswordToken
-    }
-    return users
+        this.save();
+        return this.resetPasswordToken;
+    };
+    return users;
 };
