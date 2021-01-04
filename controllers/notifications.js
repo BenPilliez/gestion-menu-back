@@ -29,7 +29,6 @@ module.exports = {
 
         try {
 
-            console.log(req.user);
             const notification = await models.notifications.findOne({
                 where: {
                     usersId: req.user.userId,
