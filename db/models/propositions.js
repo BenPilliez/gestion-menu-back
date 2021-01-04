@@ -22,15 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     propositions.init({
         content: {
             type: DataTypes.TEXT,
-            allowNull: false,
-            validate: {
-                notEmpty: {
-                    msg: "Allez on rempli le formulaire correctement, il me faut un text"
-                },
-                notNull: {
-                    msg: "Allez on rempli le formulaire correctement, il me faut un text"
-                }
-            }
+            allowNull: true,
         },
         title: {
             type: DataTypes.STRING,
